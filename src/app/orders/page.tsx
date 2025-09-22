@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useProduct } from "@/hooks/useProduct";
+import { ProductProvider, useProduct } from "@/context/product.context";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +20,8 @@ import { ChevronDown, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const OrdersPage = () => {
-  const { categories, getCategories, setCategories } = useProduct();
+  const { categories, getCategories, setCategories, setCategory, category } =
+    useProduct();
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
 
   useEffect(() => {
@@ -40,8 +41,15 @@ const OrdersPage = () => {
         <div className="flex items-center gap-3 max-sm:flex-col-reverse">
           <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
             <DropdownMenuTrigger asChild>
-              <div className="py-2 px-3 flex items-center justify-between w-52 bg-white rounded-lg cursor-pointer">
-                Categories <ChevronDown color="gray" size={20} />
+              <div className="py-2 px-3 flex text-sm items-center justify-between w-52 bg-white rounded-lg cursor-pointer capitalize">
+                {category ? category : "Categories"}{" "}
+                <ChevronDown
+                  color="gray"
+                  size={20}
+                  className={`transition-transform duration-200 ${
+                    openDropdown ? "rotate-180" : ""
+                  }`}
+                />
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -60,7 +68,10 @@ const OrdersPage = () => {
                   categories.map((category, index) => {
                     return (
                       <div key={index}>
-                        <DropdownMenuItem className="cursor-pointer">
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => setCategory(category.slug)}
+                        >
                           {category.name}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
@@ -71,9 +82,6 @@ const OrdersPage = () => {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="orange" size="default" className="max-sm:w-full">
-            Create Order
-          </Button>
         </div>
       </div>
       <div className="mt-8">

@@ -16,11 +16,13 @@ import Image from "next/image";
 import { sidebarData } from "@/utils/sidebarData";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Cart } from "./Cart";
 
 export const DashboardHeader = () => {
   const pathname = usePathname();
   const { mobileMode } = useResponsiveness();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [openCart, setOpenCart] = useState<boolean>(false);
   const [activeNav, setActiveNav] = useState<number>(1);
 
   useEffect(() => {
@@ -50,7 +52,10 @@ export const DashboardHeader = () => {
           )}
 
           <div className="flex items-center gap-4">
-            <span className="p-2 bg-gray-200 rounded-md cursor-pointer hover:opacity-65">
+            <span
+              className="p-2 bg-gray-200 rounded-md cursor-pointer hover:opacity-65"
+              onClick={() => setOpenCart(true)}
+            >
               <ShoppingCart size={19} />
             </span>
             <span className="p-2 bg-gray-200 rounded-md cursor-pointer hover:opacity-65">
@@ -101,6 +106,7 @@ export const DashboardHeader = () => {
           </div>
         </DrawerContent>
       </Drawer>
+      <Cart open={openDrawer} setOpen={setOpenDrawer} />
     </>
   );
 };

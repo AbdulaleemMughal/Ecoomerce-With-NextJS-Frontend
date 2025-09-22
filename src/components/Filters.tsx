@@ -1,8 +1,11 @@
 "use client";
 
+import { useProduct } from "@/context/product.context";
 import { Search } from "lucide-react";
 
 export const Filters = () => {
+  const { search, setSearch } = useProduct();
+
   return (
     <>
       <div>
@@ -14,12 +17,14 @@ export const Filters = () => {
           </div>
         </div>
         <div className="mt-5 flex justify-between items-center">
-          <div className="py-2 px-4 w-72 flex items-center gap-3 bg-white shadow-sm rounded-md max-sm:w-full">
+          <div className="py-2 px-4 w-80 flex items-center gap-3 bg-white shadow-sm rounded-md max-sm:w-full">
             <Search color="gray" size={18} />
             <input
               type="text"
-              placeholder="Search product..."
+              placeholder="Search product by their category.."
               className="outline-none text-gray-600 w-full"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </div>

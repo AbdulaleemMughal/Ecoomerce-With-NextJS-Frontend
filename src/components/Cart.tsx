@@ -10,9 +10,8 @@ import {
   DrawerClose,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 import Image from "next/image";
-import { productType } from "@/types/productType";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCart } from "@/context/cart.context";
 
@@ -28,12 +27,15 @@ export const Cart = ({ open, setOpen }: CartProps) => {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerContent className="fixed right-0 top-0 h-screen w-full md:w-[400px] p-0 flex flex-col">
+      <DrawerContent
+        position="right"
+        className="fixed right-0 top-0 h-screen w-full md:w-[400px] p-0 flex flex-col"
+      >
         {/* Header */}
-        <DrawerHeader className="flex justify-between items-center border-b px-4 py-3">
+        <DrawerHeader className="flex justify-between items-center border-b px-4 py-3 flex-row">
           <DrawerTitle className="text-lg font-semibold">Your Cart</DrawerTitle>
           <DrawerClose asChild>
-            <button className="rounded-full p-2 hover:bg-gray-100">
+            <button className="rounded-full p-2 hover:bg-gray-100 cursor-pointer">
               <X size={20} />
             </button>
           </DrawerClose>
@@ -73,9 +75,9 @@ export const Cart = ({ open, setOpen }: CartProps) => {
                   {/* Remove Button */}
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="text-red-500 hover:text-red-700 text-sm"
+                    className="text-red-500 hover:text-red-700 text-sm cursor-pointer p-2 hover:bg-gray-100"
                   >
-                    Remove
+                    <Trash2 size={17} />
                   </button>
                 </div>
               ))}

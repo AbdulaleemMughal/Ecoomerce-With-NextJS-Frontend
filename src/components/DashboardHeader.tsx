@@ -17,10 +17,13 @@ import { sidebarData } from "@/utils/sidebarData";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Cart } from "./Cart";
+import Badge from "@mui/material/Badge";
+import { useCart } from "@/context/cart.context";
 
 export const DashboardHeader = () => {
   const pathname = usePathname();
   const { mobileMode } = useResponsiveness();
+  const { cartedProduct } = useCart();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [openCart, setOpenCart] = useState<boolean>(false);
   const [activeNav, setActiveNav] = useState<number>(1);
@@ -34,9 +37,8 @@ export const DashboardHeader = () => {
     <>
       <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
         <div
-          className={`p-3 bg-white flex items-center ${
-            mobileMode ? "justify-between" : "justify-end"
-          }`}
+          className={`p-3 bg-white flex items-center ${mobileMode ? "justify-between" : "justify-end"
+            }`}
         >
           {mobileMode && (
             <DrawerTrigger asChild>
@@ -50,18 +52,14 @@ export const DashboardHeader = () => {
               </span>
             </DrawerTrigger>
           )}
-
-          <div className="flex items-center gap-4">
-            <span
-              className="p-2 bg-gray-200 rounded-md cursor-pointer hover:opacity-65"
-              onClick={() => setOpenCart(true)}
-            >
+          <span
+            className="p-2 bg-gray-200 rounded-md cursor-pointer hover:opacity-65"
+            onClick={() => setOpenCart(true)}
+          >
+            <Badge badgeContent={cartedProduct.length} color="primary">
               <ShoppingCart size={19} />
-            </span>
-            <span className="p-2 bg-gray-200 rounded-md cursor-pointer hover:opacity-65">
-              <Bell size={19} />
-            </span>
-          </div>
+            </Badge>
+          </span>
         </div>
         <DrawerContent position="left">
           <DrawerHeader>
@@ -87,11 +85,10 @@ export const DashboardHeader = () => {
                 <Link href={item.path} key={item.id}>
                   <div
                     onClick={() => setActiveNav(item.id)}
-                    className={`mt-3 cursor-pointer ${
-                      activeNav === item.id
-                        ? "border-l-4 border-orange-600"
-                        : ""
-                    } `}
+                    className={`mt-3 cursor-pointer ${activeNav === item.id
+                      ? "border-l-4 border-orange-600"
+                      : ""
+                      } `}
                   >
                     <DrawerClose asChild>
                       <div className="mx-3 p-2 flex items-center gap-3 text-[#22331D]">
@@ -106,7 +103,7 @@ export const DashboardHeader = () => {
           </div>
         </DrawerContent>
       </Drawer>
-      <Cart open={openDrawer} setOpen={setOpenDrawer} />
+      <Cart open={openCart} setOpen={setOpenCart} />
     </>
   );
 };

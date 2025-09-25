@@ -1,4 +1,4 @@
-import { CalendarArrowUp, Home, UserRound } from "lucide-react";
+import { CalendarArrowUp, UserRound } from "lucide-react";
 
 export const sidebarData = [
   {

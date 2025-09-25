@@ -44,7 +44,7 @@ export const Users = () => {
     getAllUser().finally(() => {
       setLoading(false);
     });
-  }, [limit, skip, debouncedSearch]);
+  }, [limit, skip, debouncedSearch, getAllUser]);
 
   return (
     <>

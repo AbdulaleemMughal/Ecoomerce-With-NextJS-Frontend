@@ -30,15 +30,20 @@ export const DashboardHeader = () => {
 
   useEffect(() => {
     const activePath = sidebarData.find((item) => item.path === pathname);
-    setActiveNav(activePath?.id!);
+    if (activePath) {
+      setActiveNav(activePath.id);
+    } else {
+      setActiveNav(1);
+    }
   }, [pathname]);
 
   return (
     <>
       <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
         <div
-          className={`p-3 bg-white flex items-center ${mobileMode ? "justify-between" : "justify-end"
-            }`}
+          className={`p-3 bg-white flex items-center ${
+            mobileMode ? "justify-between" : "justify-end"
+          }`}
         >
           {mobileMode && (
             <DrawerTrigger asChild>
@@ -85,10 +90,11 @@ export const DashboardHeader = () => {
                 <Link href={item.path} key={item.id}>
                   <div
                     onClick={() => setActiveNav(item.id)}
-                    className={`mt-3 cursor-pointer ${activeNav === item.id
-                      ? "border-l-4 border-orange-600"
-                      : ""
-                      } `}
+                    className={`mt-3 cursor-pointer ${
+                      activeNav === item.id
+                        ? "border-l-4 border-orange-600"
+                        : ""
+                    } `}
                   >
                     <DrawerClose asChild>
                       <div className="mx-3 p-2 flex items-center gap-3 text-[#22331D]">

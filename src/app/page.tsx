@@ -29,7 +29,7 @@ const OrdersPage = () => {
     } else {
       setCategories([]);
     }
-  }, [openDropdown]);
+  }, [openDropdown, getCategories, setCategories]);
 
   return (
     <div className="p-8 max-md:p-4 max-sm:p-3">

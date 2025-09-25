@@ -53,7 +53,7 @@ export const Product = () => {
     getAllProducts().finally(() => {
       setLoading(false);
     });
-  }, [skip, limit, debouncedSearch, category]);
+  }, [skip, limit, debouncedSearch, category, getAllProducts]);
 
   return (
     <>

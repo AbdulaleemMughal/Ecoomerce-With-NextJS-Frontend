@@ -14,10 +14,13 @@ export const Sidebar = () => {
   const [activeNav, setActiveNav] = useState<number>(1);
 
   useEffect(() => {
-    const activePath = sidebarData.find((item) => item.path === pathname);
-    setActiveNav(activePath?.id!);
-  }, [pathname]);
-
+  const activePath = sidebarData.find((item) => item.path === pathname);
+  if (activePath) {
+    setActiveNav(activePath.id);
+  } else {
+    setActiveNav(1); 
+  }
+}, [pathname]);
   return (
     <>
       <div className="">

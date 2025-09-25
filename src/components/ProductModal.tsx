@@ -8,6 +8,7 @@ import { productType } from "@/types/productType";
 import { X } from "lucide-react";
 import { format } from "date-fns";
 import Rating from "@mui/material/Rating";
+import Image from "next/image";
 
 type ProductModalProps = {
   open: boolean;
@@ -27,12 +28,13 @@ export const ProductModal = ({
 
   useEffect(() => {
     if (productId && open) {
-      (async () => {
-        const singleProduct = await getOneProduct(productId as number);
+      const fetchProduct = async () => {
+        const singleProduct = await getOneProduct(productId);
         setProduct(singleProduct);
-      })();
+      };
+      fetchProduct();
     }
-  }, [open, productId]);
+  }, [open, productId, getOneProduct]);
 
   const getRandomColor = (name: string) => {
     const colors = [
@@ -52,12 +54,14 @@ export const ProductModal = ({
     <Modal open={open} onClose={() => setOpen(false)}>
       <Box className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
         <div className="bg-white rounded-2xl w-[90%] md:w-[80%] max-w-[1000px] max-h-[90vh] overflow-y-auto shadow-xl">
-          {/* Header */}
-          <div className="relative">
-            <img
-              src={product.thumbnail}
+          {/* Header - Fixed Image */}
+          <div className="relative w-full h-64">
+            <Image
+              src={product.thumbnail || "/placeholder-image.jpg"}
               alt={product.title}
-              className="w-full h-64 object-cover rounded-t-2xl"
+              fill
+              className="object-cover rounded-t-2xl"
+              sizes="(max-width: 768px) 100vw, 80vw"
             />
             <button
               onClick={() => {
@@ -65,13 +69,13 @@ export const ProductModal = ({
                 setProductId(null);
                 setProduct({} as productType);
               }}
-              className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100"
+              className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100 z-10"
             >
               <X size={20} />
             </button>
           </div>
 
-          {/* Content */}
+          {/* Rest of your content remains the same */}
           <div className="grid md:grid-cols-2 gap-6 p-6">
             {/* Product Info */}
             <div>

@@ -2,7 +2,7 @@
 
 import logo from "@/assets/images/logo.png";
 import { useResponsiveness } from "@/hooks/useResponsiveness";
-import { Bell, Menu, ShoppingCart } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Drawer,

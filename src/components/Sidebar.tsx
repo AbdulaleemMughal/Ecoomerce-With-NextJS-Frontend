@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export const Sidebar = () => {
   const pathname = usePathname();
-  const { tabletMode, mobileMode } = useResponsiveness();
+  const { tabletMode } = useResponsiveness();
   const [activeNav, setActiveNav] = useState<number>(1);
 
   useEffect(() => {

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import imagePlaceholder from "@/assets/images/imagePlaceholder.png";
+import { useUsers } from "@/context/users.context";
 import {
   Table,
   TableBody,
@@ -10,8 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { ChevronDown, EllipsisVertical, Eye, ShoppingCart } from "lucide-react";
-import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,39 +20,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import { useEffect, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { itemPerPage } from "@/utils/itemsPerPage";
 import { ProductPagination } from "./ProductPagination";
-import { useProduct } from "@/context/product.context";
-import { format } from "date-fns";
-import Rating from "@mui/material/Rating";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { ProductModal } from "./ProductModal";
-import { useCart } from "@/context/cart.context";
 
-export const Product = () => {
+export const Users = () => {
   const {
-    allProducts,
+    users,
+    getAllUser,
     limit,
-    debouncedSearch,
     setLimit,
+    totalUsers,
     skip,
-    category,
     setSkip,
-    totalProducts,
-    getAllProducts,
-  } = useProduct();
-  const { addProductToCart } = useCart();
-  const [openDropdown, setOpenDropdown] = useState<boolean>(false);
+    debouncedSearch,
+  } = useUsers();
   const [loading, setLoading] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
-  const [producttoVeiw, setProductToVeiw] = useState<number | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
-    getAllProducts().finally(() => {
+    getAllUser().finally(() => {
       setLoading(false);
     });
-  }, [skip, limit, debouncedSearch, category]);
+  }, [limit, skip, debouncedSearch]);
 
   return (
     <>
@@ -61,16 +52,15 @@ export const Product = () => {
         <Table className="border-b border-gray-400">
           <TableHeader className="text-sm bg-gray-100 overflow-hidden border-none">
             <TableRow className="text-[12px]">
-              <TableHead className="w-[300px] rounded-tl-2xl rounded-bl-2xl pl-5">
-                ORDER
+              <TableHead className="rounded-tl-2xl rounded-bl-2xl pl-5">
+                FIRSTNAME
               </TableHead>
-              <TableHead>CATEGORY</TableHead>
-              <TableHead className="text-center">DATE</TableHead>
-              <TableHead>TOTAL</TableHead>
-              <TableHead className="text-center">RATING</TableHead>
-              <TableHead>ITEMS</TableHead>
-              <TableHead>DELIVERY METHOD</TableHead>
-              <TableHead className="rounded-tr-2xl rounded-br-2xl"></TableHead>
+              <TableHead>LASTNAME</TableHead>
+              <TableHead className="text-center">USERNAME</TableHead>
+              <TableHead className="text-center">EMAIL</TableHead>
+              <TableHead className="text-center">AGE</TableHead>
+              <TableHead className="text-center">ADDRESS</TableHead>
+              <TableHead>ROLE</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -100,14 +90,14 @@ export const Product = () => {
                     </TableCell>
                   </TableRow>
                 ))
-              : allProducts.map((product, index) => {
+              : users.map((user, index) => {
                   return (
                     <TableRow key={index} className="font-medium">
                       <TableCell className="flex items-center gap-2 pl-5">
                         <span className="border border-gray-300 rounded-md p-1">
-                          {product.images[0] ? (
+                          {user.image ? (
                             <Image
-                              src={product.images[0]}
+                              src={user.image}
                               alt="image"
                               className="rounded-sm"
                               width={35}
@@ -125,57 +115,25 @@ export const Product = () => {
                             />
                           )}
                         </span>
-                        {product.title.slice(0, 20) + "..."}
+                        {user.firstName}
                       </TableCell>
                       <TableCell className="capitalize">
-                        {product.category}
+                        {user.lastName}
                       </TableCell>
                       <TableCell className="text-gray-500 text-center">
-                        {format(
-                          new Date(product.meta.createdAt),
-                          "MMM d, hh:mm a"
-                        )}
-                      </TableCell>
-                      <TableCell className="text-gray-500">
-                        ${product.price}
+                        {user.username}
                       </TableCell>
                       <TableCell className="text-gray-500 text-center">
-                        <Rating defaultValue={product.rating} precision={0.5} />
+                        {user.email}
                       </TableCell>
-                      <TableCell className="text-gray-500">
-                        {product.stock} items
+                      <TableCell className="text-gray-500 text-center">
+                        {user.age}
+                      </TableCell>
+                      <TableCell className="text-gray-500 text-center">
+                        {user.address.address}, {user.address.city}
                       </TableCell>
                       <TableCell className="text-gray-500 ">
-                        Free Shipping
-                      </TableCell>
-                      <TableCell className="text-gray-500">
-                        <Popover>
-                          <PopoverTrigger>
-                            <EllipsisVertical
-                              size={16}
-                              className="cursor-pointer"
-                            />
-                          </PopoverTrigger>
-                          <PopoverContent className="w-32 p-0">
-                            <div
-                              className="text-blue-500 text-sm px-3 py-2 flex items-center gap-2 border-b border-gray-300 cursor-pointer font-medium hover:bg-gray-100"
-                              onClick={() => {
-                                setOpen(true);
-                                setProductToVeiw(product.id);
-                              }}
-                            >
-                              <Eye size={16} /> Veiw Details
-                            </div>
-                            <div
-                              className="text-gray-500 text-sm px-3 py-2 flex items-center gap-2 cursor-pointer font-medium hover:bg-gray-100"
-                              onClick={() => {
-                                addProductToCart(product);
-                              }}
-                            >
-                              <ShoppingCart size={16} /> Add To Cart
-                            </div>
-                          </PopoverContent>
-                        </Popover>
+                        {user.role}
                       </TableCell>
                     </TableRow>
                   );
@@ -223,21 +181,15 @@ export const Product = () => {
             </DropdownMenu>
           </div>
           <div className="max-md:mx-auto">
-          <ProductPagination
-            page={totalProducts}
-            limit={limit}
-            skip={skip}
-            setSkip={setSkip}
-          />
+            <ProductPagination
+              page={totalUsers}
+              limit={limit}
+              skip={skip}
+              setSkip={setSkip}
+            />
           </div>
         </div>
       </div>
-      <ProductModal
-        open={open}
-        setOpen={setOpen}
-        productId={producttoVeiw}
-        setProductId={setProductToVeiw}
-      />
     </>
   );
 };

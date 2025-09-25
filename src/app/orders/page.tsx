@@ -3,12 +3,11 @@
 import { Calender } from "@/components/Calender";
 import { Filters } from "@/components/Filters";
 import { Product } from "@/components/Product";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ProductProvider, useProduct } from "@/context/product.context";
+import { useProduct } from "@/context/product.context";
 import {
   DropdownMenu,
   DropdownMenuContent,

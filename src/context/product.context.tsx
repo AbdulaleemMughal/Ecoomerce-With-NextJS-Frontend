@@ -20,7 +20,6 @@ type ProductContextType = {
   skip: number;
   search: string;
   debouncedSearch: string;
-  loading: boolean;
   category: string;
   setCategory: (c: string) => void;
   setCategories: (c: []) => void;
@@ -45,7 +44,6 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({
   const [totalProducts, setTotalProducts] = useState<number | null>(null);
   const [limit, setLimit] = useState<number>(10);
   const [skip, setSkip] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -73,15 +71,6 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({
       else console.error(err);
     }
   }, [debouncedSearch, limit, skip, category]);
-
-  useEffect(() => {
-    setLoading(true);
-    getAllProducts().finally(() => setLoading(false));
-  }, [getAllProducts]);
-
-  useEffect(() => {
-    setSkip(0);
-  }, [limit]);
 
   const getCategories = useCallback(async () => {
     try {
@@ -114,7 +103,6 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({
         skip,
         search,
         debouncedSearch,
-        loading,
         category,
         setCategory,
         setSearch,

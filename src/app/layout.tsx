@@ -5,7 +5,8 @@ import { DashboardHeader } from "@/components/DashboardHeader";
 import { SidebarWrapper } from "@/components/SidebarWrapper";
 import { ProductProvider } from "@/context/product.context";
 import { CartProvider } from "@/context/cart.context";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
+import { UserProvider } from "@/context/users.context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,16 +33,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
       >
-        <CartProvider>
-          <ProductProvider>
-            <SidebarWrapper />
-            <main className="flex-1 h-screen overflow-y-auto bg-[#EFEDE7]">
-              <DashboardHeader />
-              {children}
-            </main>
-            <Toaster position="top-center" reverseOrder={false} />
-          </ProductProvider>
-        </CartProvider>
+        <UserProvider>
+          <CartProvider>
+            <ProductProvider>
+              <SidebarWrapper />
+              <main className="flex-1 h-screen overflow-y-auto bg-[#EFEDE7]">
+                <DashboardHeader />
+                {children}
+              </main>
+              <Toaster position="top-center" reverseOrder={false} />
+            </ProductProvider>
+          </CartProvider>
+        </UserProvider>
       </body>
     </html>
   );
